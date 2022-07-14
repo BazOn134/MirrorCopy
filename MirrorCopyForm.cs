@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Diagnostics;
+using System.Drawing;
 using System.IO;
 using System.Windows.Forms;
 
@@ -15,9 +16,9 @@ namespace ZAW.MirrorCopy
         private void MirrorCopyForm_Load(object sender, EventArgs e)
         {
             InitialData();
-            lbl_PathArch.Text = Data.FullPathFolderArch;
-            lbl_PathCopy.Text = Data.FullPathFolderCopy;
-            lbl_SaveLog.Text = Data.FullPathLogSaveToFile ?  "Информация сохраняется в LOG": "Информация в LOG не сохраняется";
+            lbl_PathArch.Text = GlobalData.FullPathFolderArch;
+            lbl_PathCopy.Text = GlobalData.FullPathFolderCopy;
+            lbl_SaveLog.Text = GlobalData.FullPathLogSaveToFile ?  "Информация сохраняется в LOG": "Информация в LOG не сохраняется";
         }
 
         /// <summary>
@@ -26,10 +27,10 @@ namespace ZAW.MirrorCopy
         private void InitialData()
         {
             //ТОДО создать штатное получение захардкоденных данных
-            Data.FullPathFolderOrig = @"C:\Users\Zalcman\Desktop\ТЕСТ_АРХ\Папка ОСНОВА";
-            Data.FullPathFolderCopy = @"C:\Users\Zalcman\Desktop\ТЕСТ_АРХ\!Архив";
-            Data.FullPathFolderArch = @"C:\Users\Zalcman\Desktop\ТЕСТ_АРХ\!Архив\Папка ОСНОВА";
-            Data.FullPathLogSaveToFile = false;
+            GlobalData.FullPathFolderOrig = @"C:\Users\Zalcman\Desktop\ТЕСТ_АРХ\Папка ОСНОВА";
+            GlobalData.FullPathFolderCopy = @"C:\Users\Zalcman\Desktop\ТЕСТ_АРХ\!Архив";
+            GlobalData.FullPathFolderArch = @"C:\Users\Zalcman\Desktop\ТЕСТ_АРХ\!Архив\Папка ОСНОВА";
+            GlobalData.FullPathLogSaveToFile = false;
         }
 
         private void lbl_PathArch_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
@@ -45,12 +46,24 @@ namespace ZAW.MirrorCopy
         /// <summary> 
         /// Выполняет запуск выполнения биснес-логики
         /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
+        /// <param name="sender">Control</param>
+        /// <param name="e">ButtonClick</param>
         private void btn_Start_Click(object sender, EventArgs e)
         {
             //!ТОДО содать класс логики и классы действий
-            MessageBox.Show("Функция в разработке");
+            var button = (Button)sender;
+            if (button.Text == "Пауза")
+            {
+                button.Text = "Начать";
+                button.BackColor =Color.GreenYellow;
+                tslbl_StatusText.Text = "Процесс поставлен на паузу";
+            }
+            else
+            {
+                button.Text = "Пауза";
+                button.BackColor =Color.Yellow;
+                tslbl_StatusText.Text = "Обработка продолжается";
+            }
         }
 
         private void настройкиToolStripMenuItem_Click(object sender, EventArgs e)

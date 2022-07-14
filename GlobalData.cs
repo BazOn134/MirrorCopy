@@ -1,6 +1,6 @@
 ﻿namespace ZAW.MirrorCopy
 {
-    public static class  Data
+    public static class  GlobalData
     {
         public static string FullPathFolderOrig { get; set; }
         public static string FullPathFolderCopy { get; set; }
