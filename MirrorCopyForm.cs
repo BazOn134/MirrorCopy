@@ -46,8 +46,6 @@ namespace ZAW.MirrorCopy
         /// <summary> 
         /// Выполняет запуск выполнения биснес-логики
         /// </summary>
-        /// <param name="sender">Control</param>
-        /// <param name="e">ButtonClick</param>
         private void btn_Start_Click(object sender, EventArgs e)
         {
             //!ТОДО содать класс логики и классы действий
