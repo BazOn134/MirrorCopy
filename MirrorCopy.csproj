@@ -90,6 +90,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Controller\RecursiveDirectoryFileProcessor.cs" />
     <Compile Include="GlobalData.cs" />
     <Compile Include="MirrorCopyForm.cs">
       <SubType>Form</SubType>
@@ -142,5 +143,6 @@
       <Install>false</Install>
     </BootstrapperPackage>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

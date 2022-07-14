@@ -2,7 +2,9 @@
 using System.Diagnostics;
 using System.Drawing;
 using System.IO;
+using System.Threading.Tasks;
 using System.Windows.Forms;
+using ZAW.MirrorCopy.Controller;
 
 namespace ZAW.MirrorCopy
 {
@@ -16,6 +18,7 @@ namespace ZAW.MirrorCopy
         private void MirrorCopyForm_Load(object sender, EventArgs e)
         {
             InitialData();
+            Application.DoEvents();
             lbl_PathArch.Text = GlobalData.FullPathFolderArch;
             lbl_PathCopy.Text = GlobalData.FullPathFolderCopy;
             lbl_SaveLog.Text = GlobalData.FullPathLogSaveToFile ?  "Информация сохраняется в LOG": "Информация в LOG не сохраняется";
@@ -46,22 +49,30 @@ namespace ZAW.MirrorCopy
         /// <summary> 
         /// Выполняет запуск выполнения биснес-логики
         /// </summary>
-        private void btn_Start_Click(object sender, EventArgs e)
+        private  void btn_Start_Click(object sender, EventArgs e)
         {
             //!ТОДО содать класс логики и классы действий
             var button = (Button)sender;
-            if (button.Text == "Пауза")
+            if (button.Text == "Остановить")
             {
-                button.Text = "Начать";
+                button.Text = "Продолжить";
                 button.BackColor =Color.GreenYellow;
-                tslbl_StatusText.Text = "Процесс поставлен на паузу";
+                tslbl_StatusText.Text = "Процесс прерван пользователем";
             }
             else
             {
-                button.Text = "Пауза";
-                button.BackColor =Color.Yellow;
+                button.Text = "Остановить";
+                button.BackColor =Color.Red;
                 tslbl_StatusText.Text = "Обработка продолжается";
+                Zapusk(sender, e);
             }
+        }
+
+        private async void Zapusk(object sender, EventArgs e)
+        {
+            var Process = new RecursiveDirectoryFileProcessor();
+            await Task.Run(() => Process.Start());
+            btn_Start_Click(sender, e);
         }
 
         private void настройкиToolStripMenuItem_Click(object sender, EventArgs e)
