@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using ZAW.MirrorCopy;
+using System.Windows.Forms;
 
 namespace ZAW.MirrorCopy.Controller
 {
@@ -20,57 +21,18 @@ namespace ZAW.MirrorCopy.Controller
             PathFolderReceiver = GlobalData.FullPathFolderCopy;
         }
 
-        public void Start()
+        public void Start(object lFiles)
         {
             //ТОДО разработать логику обработки дерева файлов
-            System.Windows.Forms.MessageBox.Show("Start");
+            var listFiles = (Dictionary<string, DateTime>)lFiles;
+            System.Diagnostics.Debug.WriteLine("Start RecursiveDirectoryFileProcessor ======================================================");
             if (Directory.Exists(PathFolderSender))
             {
-                var Process = new ProcessDirectory(new DirectoryInfo(PathFolderSender));
-                Process.Start();
+                var processDirectory = new ProcessDirectory(new DirectoryInfo(PathFolderSender));
+                processDirectory.Start(listFiles);
             }
-
-            Thread.Sleep(3000); // имитация продолжительной работы
-        }
-        
-        
-        
-        
-        public void ProcessDirectory1(string targetDirectory) // Обработайте все файлы в переданном каталоге, выполните повторный поиск по любым найденным каталогам и обработайте содержащиеся в них файлы.
-        {
-            //string[] subdirectoryEntries = Directory.GetDirectories(targetDirectory); // Выполните рекурсию в подкаталоги этого каталога.
-            //foreach (string subdirectory in subdirectoryEntries)
-            //{
-            //    var newDirectory = subdirectory.Replace(PathFolderSender, PathFolderReceiver);
-            //    if (!Directory.Exists(newDirectory))
-            //    {
-            //        Directory.CreateDirectory(newDirectory);
-            //        if (Data.FullPathLogSaveToFile) Logger.Info("Создана папка      '" + newDirectory);
-            //    }
-            //    ProcessDirectory(subdirectory);
-            //}
-
-            //string[] fileEntries = Directory.GetFiles(targetDirectory); // Обработайте список файлов, найденных в каталоге.
-            //foreach (string fileName in fileEntries)
-            //{
-            //    var newFile = fileName.Replace(PathFolderSender, PathFolderReceiver);
-            //    if (File.Exists(newFile))
-            //    {
-            //        if (Data.FullPathLogSaveToFile) Logger.Info("Файл существует '" + newFile);
-            //    }
-            //    else
-            //    {
-            //        try
-            //        {
-            //            File.Copy(fileName, newFile, true);
-            //            if (Data.FullPathLogSaveToFile) Logger.Info("Файл скопирован в '" + newFile);
-            //        }
-            //        catch (Exception)
-            //        {
-            //            if (Data.FullPathLogSaveToFile) Logger.Info("Ошибка при копировании файла '" + newFile);
-            //        }
-            //    }
-            //}
+            GlobalData.StageInProcess = false;
+            GlobalData.StageIsOnPause = false;
         }
 
     }

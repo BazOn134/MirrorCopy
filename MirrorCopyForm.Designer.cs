@@ -32,6 +32,7 @@ namespace ZAW.MirrorCopy
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MirrorCopyForm));
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.файлToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.выходToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.настройкиToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.справкаToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.statusStrip1 = new System.Windows.Forms.StatusStrip();
@@ -42,7 +43,8 @@ namespace ZAW.MirrorCopy
             this.lbl_SaveLog = new System.Windows.Forms.Label();
             this.lbl_PathArch = new System.Windows.Forms.LinkLabel();
             this.lbl_PathCopy = new System.Windows.Forms.LinkLabel();
-            this.выходToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.btn_Pause = new System.Windows.Forms.Button();
+            this.btn_Stop = new System.Windows.Forms.Button();
             this.menuStrip1.SuspendLayout();
             this.statusStrip1.SuspendLayout();
             this.SuspendLayout();
@@ -67,6 +69,13 @@ namespace ZAW.MirrorCopy
             this.файлToolStripMenuItem.Name = "файлToolStripMenuItem";
             this.файлToolStripMenuItem.Size = new System.Drawing.Size(48, 20);
             this.файлToolStripMenuItem.Text = "Файл";
+            // 
+            // выходToolStripMenuItem
+            // 
+            this.выходToolStripMenuItem.Name = "выходToolStripMenuItem";
+            this.выходToolStripMenuItem.Size = new System.Drawing.Size(108, 22);
+            this.выходToolStripMenuItem.Text = "Выход";
+            this.выходToolStripMenuItem.Click += new System.EventHandler(this.выходToolStripMenuItem_Click);
             // 
             // настройкиToolStripMenuItem
             // 
@@ -106,11 +115,11 @@ namespace ZAW.MirrorCopy
             this.btn_Start.Location = new System.Drawing.Point(472, 28);
             this.btn_Start.Margin = new System.Windows.Forms.Padding(4);
             this.btn_Start.Name = "btn_Start";
-            this.btn_Start.Size = new System.Drawing.Size(231, 84);
+            this.btn_Start.Size = new System.Drawing.Size(232, 84);
             this.btn_Start.TabIndex = 2;
             this.btn_Start.Text = "Начать";
             this.btn_Start.UseVisualStyleBackColor = false;
-            this.btn_Start.Click += new System.EventHandler(this.btn_Start_Click);
+            this.btn_Start.Click += new System.EventHandler(this.Button_Click);
             // 
             // label1
             // 
@@ -144,6 +153,7 @@ namespace ZAW.MirrorCopy
             this.lbl_SaveLog.Size = new System.Drawing.Size(217, 15);
             this.lbl_SaveLog.TabIndex = 3;
             this.lbl_SaveLog.Text = "Информация в LOG не сохраняется";
+            this.lbl_SaveLog.Click += new System.EventHandler(this.lbl_SaveLog_Click);
             // 
             // lbl_PathArch
             // 
@@ -169,12 +179,29 @@ namespace ZAW.MirrorCopy
             this.lbl_PathCopy.Text = "Пусто";
             this.lbl_PathCopy.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.lbl_PathCopy_LinkClicked);
             // 
-            // выходToolStripMenuItem
+            // btn_Pause
             // 
-            this.выходToolStripMenuItem.Name = "выходToolStripMenuItem";
-            this.выходToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
-            this.выходToolStripMenuItem.Text = "Выход";
-            this.выходToolStripMenuItem.Click += new System.EventHandler(this.выходToolStripMenuItem_Click);
+            this.btn_Pause.BackColor = System.Drawing.Color.Yellow;
+            this.btn_Pause.Font = new System.Drawing.Font("Times New Roman", 20.25F, System.Drawing.FontStyle.Bold);
+            this.btn_Pause.Location = new System.Drawing.Point(472, 28);
+            this.btn_Pause.Name = "btn_Pause";
+            this.btn_Pause.Size = new System.Drawing.Size(146, 84);
+            this.btn_Pause.TabIndex = 5;
+            this.btn_Pause.Text = "Пауза";
+            this.btn_Pause.UseVisualStyleBackColor = false;
+            this.btn_Pause.Click += new System.EventHandler(this.Button_Click);
+            // 
+            // btn_Stop
+            // 
+            this.btn_Stop.BackColor = System.Drawing.Color.Red;
+            this.btn_Stop.Font = new System.Drawing.Font("Times New Roman", 20.25F, System.Drawing.FontStyle.Bold);
+            this.btn_Stop.Location = new System.Drawing.Point(617, 28);
+            this.btn_Stop.Name = "btn_Stop";
+            this.btn_Stop.Size = new System.Drawing.Size(87, 84);
+            this.btn_Stop.TabIndex = 5;
+            this.btn_Stop.Text = "Стоп";
+            this.btn_Stop.UseVisualStyleBackColor = false;
+            this.btn_Stop.Click += new System.EventHandler(this.Button_Click);
             // 
             // MirrorCopyForm
             // 
@@ -189,6 +216,8 @@ namespace ZAW.MirrorCopy
             this.Controls.Add(this.btn_Start);
             this.Controls.Add(this.statusStrip1);
             this.Controls.Add(this.menuStrip1);
+            this.Controls.Add(this.btn_Pause);
+            this.Controls.Add(this.btn_Stop);
             this.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MainMenuStrip = this.menuStrip1;
@@ -220,6 +249,8 @@ namespace ZAW.MirrorCopy
         private System.Windows.Forms.LinkLabel lbl_PathArch;
         private System.Windows.Forms.LinkLabel lbl_PathCopy;
         private System.Windows.Forms.ToolStripMenuItem выходToolStripMenuItem;
+        private System.Windows.Forms.Button btn_Pause;
+        private System.Windows.Forms.Button btn_Stop;
     }
 }
 

@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 
 namespace ZAW.MirrorCopy.Controller
 {
@@ -16,10 +18,27 @@ namespace ZAW.MirrorCopy.Controller
             File = file;
         }
 
-        public void Start()
+        public void Start(Dictionary<string, DateTime> listFiles)
         {
-            System.Windows.Forms.MessageBox.Show("ProcessFile =" + File.Name);
+            try
+            {
+                if (File.Name.ToString() != "Thumbs.db")
+                {
+                    listFiles.Add(File.FullName.ToString(), File.LastWriteTime);
+                    Debug.WriteLine("Записан " + this.ToString());
+                }
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine("--- WARN " + e.Message + ";  " + File.FullName.ToString());
+                //throw;
+            }
+            Application.DoEvents();
         }
 
+        public override string ToString()
+        {
+            return "Name: " + File.Name.ToString() + "; LastWriteTime: " + File.LastWriteTime.ToString();// base.ToString();
+        }
     }
 }

@@ -4,6 +4,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.IO;
+using System.Threading;
+using System.Windows.Forms;
 
 namespace ZAW.MirrorCopy.Controller
 {
@@ -19,22 +21,31 @@ namespace ZAW.MirrorCopy.Controller
             Dir = directoryInfo;
         }
 
-        public void Start()
+        public void Start(Dictionary<string, DateTime> listFiles)
         {
+            //Thread.Sleep(3000); // имитация продолжительной работы
+            if (!GlobalData.StageInProcess) return; 
+            while (GlobalData.StageIsOnPause) 
+            {
+                System.Diagnostics.Debug.WriteLine("Процесс на паузе +++++++++++++++++++++");
+                Thread.Sleep(1000); // пауза
+            }
             ListFiles = Dir.GetFiles();
             ListDirs = Dir.GetDirectories();
             if (ListFiles.Length != 0)
             {
                 foreach (var file in ListFiles)
                 {
-                    new ProcessFile(file);
+                    if (!GlobalData.StageInProcess) return;
+                    new ProcessFile(file).Start(listFiles);
                 }
             }
-            if (ListDirs.Length != 0) 
+            if (ListDirs.Length != 0)
             {
                 foreach (var dir in ListDirs)
                 {
-                    new ProcessDirectory(dir);
+                    if (!GlobalData.StageInProcess) return;
+                    new ProcessDirectory(dir).Start(listFiles);
                 }
             }
         }
