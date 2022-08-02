@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Drawing;
 using System.IO;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -11,7 +10,16 @@ namespace ZAW.MirrorCopy
 {
     public partial class MirrorCopyForm : Form
     {
-        public Dictionary<string, DateTime> listFiles;
+        //public delegate void InsertText(string text); // для записи в tslbl_StatusText из другого потока
+
+        public List<ProcessFile> listFiles;
+
+        /// <summary>Обновляет информацию в tslbl_StatusText</summary>
+        /// <param name="value">Новый текст</param>
+        public void InsertStatusText(string value)
+        {
+            tslbl_StatusText.Text = value;
+        }
 
         #region Инициализаторы
         public MirrorCopyForm()
@@ -41,21 +49,50 @@ namespace ZAW.MirrorCopy
         /// <summary>Производит заполнение текстовых полей формы</summary>
         private void InitialTextField()
         {
-            lbl_PathArch.Text = GlobalData.FullPathFolderArch;
-            lbl_PathCopy.Text = GlobalData.FullPathFolderCopy;
+            lbl_PathArch.Text = TextLabel50(GlobalData.FullPathFolderOrig);
+            lbl_PathCopy.Text = TextLabel50(GlobalData.FullPathFolderCopy);
             lbl_SaveLog.Text = GlobalData.FullPathLogSaveToFile ?  "Информация сохраняется в LOG": "Информация в LOG не сохраняется";
+        }
+
+        /// <summary>Сокращает путь к файлу/папке до 50-и символов (не более) путем замены наименований промежуточных пакок на "..."</summary>
+        /// <param name="str">Путь к файлу/папке</param>
+        /// <returns>Короткая строка, не более 50-и символов</returns>
+        private string TextLabel50(string str)
+        {
+            string s2 = "\\";
+            string[] mas = str.Split(new string[] { s2 }, StringSplitOptions.None);
+            int midel = mas.Length / 2;;
+            int otstup = 0; 
+
+            while (str.Length > 50)
+            {
+                while (mas[midel + otstup] == "..." && mas[midel - otstup] == "...") otstup++;
+
+                if (midel == otstup)
+                {
+                    str = str.Replace("...", ".");
+                    if (str.Length > 50) str = "..." + str.Substring(str.LastIndexOf("\\"));
+                    break;
+                }
+
+                if (mas[midel + otstup] == "..." || otstup == 0) mas[midel - otstup] = "...";
+                else mas[midel + otstup] = "...";
+
+                str = String.Join("\\", mas);
+            }
+            return str;
         }
         #endregion
 
         #region Кликеры текстовых полей
         private void lbl_PathArch_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
-            if (Directory.Exists(lbl_PathArch.Text)) Process.Start(lbl_PathArch.Text);
+            if (Directory.Exists(GlobalData.FullPathFolderOrig)) Process.Start(GlobalData.FullPathFolderOrig);
         }
 
         private void lbl_PathCopy_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
-            if (Directory.Exists(lbl_PathCopy.Text)) Process.Start(lbl_PathCopy.Text);
+            if (Directory.Exists(GlobalData.FullPathFolderCopy)) Process.Start(GlobalData.FullPathFolderCopy);
         }
         
         private void lbl_SaveLog_Click(object sender, EventArgs e)
@@ -68,52 +105,39 @@ namespace ZAW.MirrorCopy
         /// <summary>Обработчик нажатия управляющих кнопок</summary>
         private void Button_Click(object sender, EventArgs e)
         {
-            //!ТОДО содать класс логики и классы действий
             var button = (Button)sender;
             StateSituation(button.Name.ToString() != "btn_Start");
             if (button.Name.ToString() == "btn_Start")
             {
-                ButtonStatus(true, false);
-                if (listFiles is null)
-                {
-                    listFiles = new Dictionary<string, DateTime>();
-                }
-
-                StartAcync(listFiles);
+                GlobalData.StageInProcess = true;
+                listFiles = new List<ProcessFile>();
+                StartAcync();
             }
             else if (button.Name.ToString() == "btn_Pause")
-            {
-                ButtonStatus(true, true);
-            }
+                GlobalData.StageInProcess = true;
             else if (button.Name.ToString() == "btn_Stop")
-            {
-                ButtonStatus(false, false);
-            }
+                GlobalData.StageInProcess = false;
         }
 
-        private void StartAcync(Dictionary<string, DateTime> listFiles)
+        private async void StartAcync()
         {
-            Debug.WriteLine("");
-            Debug.WriteLine("Старт обработки ===========================================================");
-            MessageBox.Show("Before Task.Run");
-            var Process = new RecursiveDirectoryFileProcessor();
+            var Receiver = new ProcessReceiver();
+            var Processor = new RecursiveDirectoryFileProcessor();
             // ТОДО добавить сериализацию класса состава папки-получателя
-            Task.Run(() => Process.Start((object)listFiles)); // сбор в listFiles информации по файлам в папке-источнике
-            MessageBox.Show("After Task.Run");
-            ButtonStatus(false, false);
+            //await Task.Run(() => Receiver.Start((object)dictFilesReceiver)); 
+            tslbl_StatusText.Text = "Получение списка файлов папки-источника";
+            await Task.Run(() => Processor.Start((object)listFiles)); // сбор в listFiles информации по файлам в папке-источнике
+            GlobalData.StageInProcess = false;
+            tslbl_StatusText.Text = "Готово";
             StateSituation(true);
         }
 
-        public void ButtonStatus(bool proc, bool paus)
-        {
-            GlobalData.StageInProcess = proc;
-            GlobalData.StageIsOnPause = paus;
-        }
 
+        /// <summary>Управление видимостью управляющих кнопок</summary>
         private void StateSituation(bool state=false)
         {
             btn_Start.Visible = state;
-            btn_Pause.Visible = !state;
+            btn_Pause.Visible = false; // = !state;
             btn_Stop.Visible = !state;
         }
 

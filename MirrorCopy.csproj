@@ -92,6 +92,7 @@
   <ItemGroup>
     <Compile Include="Controller\ProcessDirectory.cs" />
     <Compile Include="Controller\ProcessFile.cs" />
+    <Compile Include="Controller\ProcessReceiver.cs" />
     <Compile Include="Controller\RecursiveDirectoryFileProcessor.cs" />
     <Compile Include="GlobalData.cs" />
     <Compile Include="MirrorCopyForm.cs">

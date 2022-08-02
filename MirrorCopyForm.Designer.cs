@@ -158,10 +158,10 @@ namespace ZAW.MirrorCopy
             // lbl_PathArch
             // 
             this.lbl_PathArch.AutoSize = true;
-            this.lbl_PathArch.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.lbl_PathArch.Location = new System.Drawing.Point(111, 39);
+            this.lbl_PathArch.Font = new System.Drawing.Font("Consolas", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.lbl_PathArch.Location = new System.Drawing.Point(99, 39);
             this.lbl_PathArch.Name = "lbl_PathArch";
-            this.lbl_PathArch.Size = new System.Drawing.Size(41, 15);
+            this.lbl_PathArch.Size = new System.Drawing.Size(42, 14);
             this.lbl_PathArch.TabIndex = 4;
             this.lbl_PathArch.TabStop = true;
             this.lbl_PathArch.Text = "Пусто";
@@ -170,10 +170,10 @@ namespace ZAW.MirrorCopy
             // lbl_PathCopy
             // 
             this.lbl_PathCopy.AutoSize = true;
-            this.lbl_PathCopy.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.lbl_PathCopy.Location = new System.Drawing.Point(111, 66);
+            this.lbl_PathCopy.Font = new System.Drawing.Font("Consolas", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.lbl_PathCopy.Location = new System.Drawing.Point(99, 66);
             this.lbl_PathCopy.Name = "lbl_PathCopy";
-            this.lbl_PathCopy.Size = new System.Drawing.Size(41, 15);
+            this.lbl_PathCopy.Size = new System.Drawing.Size(42, 14);
             this.lbl_PathCopy.TabIndex = 4;
             this.lbl_PathCopy.TabStop = true;
             this.lbl_PathCopy.Text = "Пусто";
@@ -208,8 +208,6 @@ namespace ZAW.MirrorCopy
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(713, 142);
-            this.Controls.Add(this.lbl_PathCopy);
-            this.Controls.Add(this.lbl_PathArch);
             this.Controls.Add(this.lbl_SaveLog);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.label1);
@@ -218,6 +216,8 @@ namespace ZAW.MirrorCopy
             this.Controls.Add(this.menuStrip1);
             this.Controls.Add(this.btn_Pause);
             this.Controls.Add(this.btn_Stop);
+            this.Controls.Add(this.lbl_PathCopy);
+            this.Controls.Add(this.lbl_PathArch);
             this.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MainMenuStrip = this.menuStrip1;

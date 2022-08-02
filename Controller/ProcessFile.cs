@@ -1,44 +1,24 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
 
 namespace ZAW.MirrorCopy.Controller
 {
-    class ProcessFile
+    public class ProcessFile
     {
-        readonly FileInfo File;
+        public string Name { get; private set; }
+        public string FullName { get; private set; }
+        public DateTime ModifiedDate { get; private set; }
 
         public ProcessFile(FileInfo file)
         {
-            File = file;
-        }
-
-        public void Start(Dictionary<string, DateTime> listFiles)
-        {
-            try
-            {
-                if (File.Name.ToString() != "Thumbs.db")
-                {
-                    listFiles.Add(File.FullName.ToString(), File.LastWriteTime);
-                    Debug.WriteLine("Записан " + this.ToString());
-                }
-            }
-            catch (Exception e)
-            {
-                Debug.WriteLine("--- WARN " + e.Message + ";  " + File.FullName.ToString());
-                //throw;
-            }
-            Application.DoEvents();
+            Name = file.Name;
+            FullName = file.FullName;
+            ModifiedDate = file.LastWriteTime;
         }
 
         public override string ToString()
         {
-            return "Name: " + File.Name.ToString() + "; LastWriteTime: " + File.LastWriteTime.ToString();// base.ToString();
+            return $"Name: {Name};\t ModifiedDate: {ModifiedDate}";
         }
     }
 }

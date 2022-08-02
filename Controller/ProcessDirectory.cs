@@ -1,50 +1,41 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 using System.IO;
 using System.Threading;
-using System.Windows.Forms;
+using static ZAW.MirrorCopy.MirrorCopyForm;
 
 namespace ZAW.MirrorCopy.Controller
 {
     class ProcessDirectory
     {
         readonly DirectoryInfo Dir;
-        private FileInfo[] ListFiles;// = List<FileInfo>;
+        private FileInfo[] DictFiles;// = List<FileInfo>;
         private DirectoryInfo[] ListDirs;// = List<FileInfo>;
-
 
         public ProcessDirectory(DirectoryInfo directoryInfo)
         {
             Dir = directoryInfo;
         }
 
-        public void Start(Dictionary<string, DateTime> listFiles)
+        public void Start(List<ProcessFile> listFiles)
         {
-            //Thread.Sleep(3000); // имитация продолжительной работы
-            if (!GlobalData.StageInProcess) return; 
-            while (GlobalData.StageIsOnPause) 
+            if (!GlobalData.StageInProcess) return;
+            //InsertStatusText("Обрабатывается папка " + Dir.Name); // изменяем элемент передав ему значение
+
+            DictFiles = Dir.GetFiles();
+            if (DictFiles.Length != 0)
             {
-                System.Diagnostics.Debug.WriteLine("Процесс на паузе +++++++++++++++++++++");
-                Thread.Sleep(1000); // пауза
-            }
-            ListFiles = Dir.GetFiles();
-            ListDirs = Dir.GetDirectories();
-            if (ListFiles.Length != 0)
-            {
-                foreach (var file in ListFiles)
+                foreach (var file in DictFiles)
                 {
                     if (!GlobalData.StageInProcess) return;
-                    new ProcessFile(file).Start(listFiles);
+                    listFiles.Add(new ProcessFile(file));
                 }
             }
+            
+            ListDirs = Dir.GetDirectories();
             if (ListDirs.Length != 0)
             {
                 foreach (var dir in ListDirs)
                 {
-                    if (!GlobalData.StageInProcess) return;
                     new ProcessDirectory(dir).Start(listFiles);
                 }
             }
